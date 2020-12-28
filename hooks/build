@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $IMAGE_NAME var is injected into the build so the tag is correct.
+#!/bin/bash -e
 
 echo "Build hook running..."
 
