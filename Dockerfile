@@ -204,7 +204,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
         && apt install -y --no-install-recommends -o APT::Install-Suggests=0 nodejs \
-        && rm -rf /var/lib/apt/lists/*
+        && rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin \
+        && apt-cache clean
 
 ENV DEBIAN_FRONTEND=newt
 
