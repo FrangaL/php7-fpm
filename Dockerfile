@@ -1,4 +1,6 @@
-FROM debian:buster-slim
+FROM debian:sid-slim
+
+ARG APT_OPTS="--no-install-recommends -o APT::Install-Suggests=0"
 
 RUN set -eux; \
   { \
@@ -191,14 +193,7 @@ RUN set -ex \
   } | tee php-fpm.d/zz-docker.conf \
   && echo 'expose_php = off' >> $PHP_INI_DIR/conf.d/php_ver.ini
 
-RUN set -x \
-  && php -v | grep -oE 'PHP\s[.0-9]+' | grep -oE '[.0-9]+' | grep '^7.4' \
-  && /usr/local/sbin/php-fpm --test \
-  && PHP_ERROR="$( php -v 2>&1 1>/dev/null )" \
-  && if [ -n "${PHP_ERROR}" ]; then echo "${PHP_ERROR}"; false; fi
-
-RUN apt-get update && apt-get install -y --no-install-recommends -o APT::Install-Suggests=0 \
-  curl ca-certificates git nano
+RUN apt-get update && apt-get install -y $APT_OPTS curl ca-certificates git nano
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
